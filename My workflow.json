@@ -1,0 +1,254 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\nYou are an AI that manages a Google Sheet. Your job is to read messages, check the sheet, and update it correctly.\n\n### Steps\n\n1. Read the user’s message – understand what they want.\n2. Check the sheet – use read_google_sheet to see the current data.\n3. Decide – figure out what needs to be changed or added.\n4. Update – use update_google_sheet to make the change.\n5. Confirm – tell the user what you updated.\n\n### Rules\n\n* Always check the sheet before updating.\n* Only update what’s new or changed.\n* Don’t touch unrelated data.\n* If the request is unclear, ask first.\n* Keep confirmations short (e.g., “Updated client revenue in the sheet.”).\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        -48
+      ],
+      "id": "7aa9a5e5-2d0c-4c67-8754-7592678d10b1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        160
+      ],
+      "id": "278e2e14-a067-4da6-aa5e-05207619926a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "HaMa6sFsBLl16wxu",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        160
+      ],
+      "id": "623f89d5-2729-4f8e-8f8f-c5ffd8beb06a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1w_HwIkluuPnvvJfGkY_SJmOLQ8pDX0UTQ8KWWP40J-8",
+          "mode": "list",
+          "cachedResultName": "Clients Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w_HwIkluuPnvvJfGkY_SJmOLQ8pDX0UTQ8KWWP40J-8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w_HwIkluuPnvvJfGkY_SJmOLQ8pDX0UTQ8KWWP40J-8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        64,
+        160
+      ],
+      "id": "370cd6a4-5095-4e1b-85e7-de4ff671a7bd",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tj2eqs6a7W599erW",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1w_HwIkluuPnvvJfGkY_SJmOLQ8pDX0UTQ8KWWP40J-8",
+          "mode": "list",
+          "cachedResultName": "Clients Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w_HwIkluuPnvvJfGkY_SJmOLQ8pDX0UTQ8KWWP40J-8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w_HwIkluuPnvvJfGkY_SJmOLQ8pDX0UTQ8KWWP40J-8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Client": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Client__using_to_match_', ``, 'string') }}",
+            "Amount Paid": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Amount_Paid', ``, 'string') }}",
+            "Industry": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Industry', ``, 'string') }}",
+            "Gmail": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Gmail', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "Client"
+          ],
+          "schema": [
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amount Paid",
+              "displayName": "Amount Paid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Gmail",
+              "displayName": "Gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        256
+      ],
+      "id": "6d77a85b-775b-4168-aa43-13a36f0e0235",
+      "name": "Append or update row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tj2eqs6a7W599erW",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "poll"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -272,
+        -48
+      ],
+      "id": "7e4bcb2b-3844-44ac-88e6-f7319f3eb3ae",
+      "name": "Telegram Trigger",
+      "webhookId": "c212983c-4416-4705-9ed9-22b15bd5ec1a",
+      "credentials": {
+        "telegramApi": {
+          "id": "JGwQmTuqTplQ1Xh0",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f6ac7be4-10f8-4c6c-9122-4de036b11491",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0087d481d431abf55ef388417c65f80881ee213fc596aa3e02a55aedb3cf4e90"
+  },
+  "id": "mDMZdL02Oer37MBE",
+  "tags": []
+}
