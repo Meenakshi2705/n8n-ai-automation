@@ -34,6 +34,10 @@ A lightweight **AI-assisted CRM updater** built in **n8n**. It listens to **Tele
         v
 [Short confirmation back to user]
 ```
+## Workflow Screenshot
+
+![Workflow Screenshot](workflow.png)
+
 
 ### n8n Nodes (as configured)
 - **Telegram Trigger** – listens for user messages.
